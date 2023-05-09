@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import './StartTest.css'
 import { TextField } from '@mui/material';
 import { JsIcon, reactIcon } from '../../StaticImages/Icons';
-import { createtUser } from '../../../../Helpers/AsyncCalls';
+import { createtUser } from '../../Helpers/AsyncCalls';
 import { useNavigate } from 'react-router-dom';
 
 const StartTest = ({ setIsStarted, setUser, loading }) => {

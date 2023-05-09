@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import './WebFormApp.css'
-import { getUser } from '../../Helpers/AsyncCalls'
+import { getUser } from './Helpers/AsyncCalls'
 import NotAllowed from './components/NotAllowed/NotAllowed'
 import Submitted from './components/Submitted/Submitted'
 const WebFormApp = () => {

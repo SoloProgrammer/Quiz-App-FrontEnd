@@ -7,7 +7,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import './Questionnaire.css'
 import AssesmentTitle from '../AssesmentTitle'
 import Timer from '../Utils/Timer';
-import { submitTest } from '../../../../Helpers/AsyncCalls';
+import { submitTest } from '../../Helpers/AsyncCalls';
 import { useNavigate } from 'react-router-dom';
 
 const Questionnaire = ({ questionnaire, setScore, score }) => {
