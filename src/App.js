@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+// import CartApp from './Apps/CartApp/CartApp';
+// import TodoApp from './Apps/TodoApp/TodoApp';
+import { BrowserRouter as Router } from 'react-router-dom'
+import WebFormApp from './Apps/WebFormApp/WebFormApp';
+// import { Provider } from 'react-redux'
+// import TodoStore from './Apps/TodoApp/Redux/store'
+// import CartStore from './Apps/CartApp/Redux/store'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        {/* <Provider store={TodoStore}>
+          <TodoApp />
+        </Provider> */}
+        {/* <Provider store={CartStore}>
+          <CartApp />
+        </Provider> */}
+        <WebFormApp/>
+      </Router>
     </div>
   );
 }

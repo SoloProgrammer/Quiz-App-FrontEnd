@@ -1,0 +1,74 @@
+.cartItem{
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem 0;
+    box-shadow: 0 0 5px rgba(0,0,0,.4);
+    /* width: 70%; */
+}
+.left-side{
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+.left-side .img{
+    width: 7rem;    
+    height: 7rem;
+}
+.left-side .img img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.left-side .details{
+    display: flex;
+    flex-direction: column;
+    gap: .6em;
+    align-items:flex-start;
+}
+.right-side{
+    display: flex;
+    margin-right: 1rem;
+    /* gap: 2rem; */
+    flex-direction: column;
+}
+.right-side .upper{
+    display: flex;
+    gap: 2rem;
+}
+.right-side .bottom{
+
+    margin-top: .5rem;
+    border-top: 1px solid rgba(0,0,0,.2);
+    padding-top: .5rem;
+    cursor: pointer;
+}
+.right-side .bottom span{
+    color: rgb(250, 91, 91);
+    display: inline-block;
+    font-size: .85rem;
+    font-weight: 500;
+    transition: .2s;
+    
+}
+.right-side .bottom:hover span{
+    transform: scale(.9);
+}
+.right-side .qty select{
+ width: 63px;
+ height: 33px;
+ margin-top: -1rem;
+ cursor: pointer;
+}
+.right-side .qty select option{
+    padding: .3rem .5rem;
+    text-align: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+.mb_2{
+    margin-bottom: 2rem;
+}

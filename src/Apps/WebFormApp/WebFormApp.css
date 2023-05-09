@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
+
+body{
+    min-height: 95vh;
+    background: rgb(217, 230, 248) !important;
+    font-family: 'Raleway', sans-serif !important;
+}
+.MuiFormHelperText-root {
+    margin-left: .2rem !important;
+}
+.MuiContainer-root {
+    padding: 0 .5rem !important;
+}
+.roboto{
+    font-family: roboto !important;
+}

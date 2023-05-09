@@ -1,0 +1,93 @@
+:root {
+    --common-blue: rgb(8, 117, 219);
+    --light-blue: rgb(22, 143, 255);
+    --disabled-blue: rgb(128, 185, 240);
+    --white: #ffff;
+    --light-gray: rgb(219, 219, 219);
+    --medium-gray: rgba(0, 0, 0, 0.25);
+    --dim-gray: rgba(0, 0, 0, 0.5);
+  }
+  
+  .PaginationControls {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    align-items: center;
+    margin: 2rem 0;
+    justify-content: center;
+  }
+  
+  .btn button {
+    border: none;
+    padding: 0.2rem 0.1rem;
+    font-size: 1.1rem;
+    background: var(--light-blue);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+  }
+  .btn button:hover {
+    background: var(--common-blue);
+  }
+  .btn button:disabled,
+  .btn button:disabled:hover {
+    cursor: auto;
+    background: var(--disabled-blue);
+  }
+  
+  .pages {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .page {
+    width: 45px;
+    height: 45px;
+    padding: 0.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: var(--light-gray);
+    cursor: pointer;
+  }
+  
+  .page:hover {
+    background: var(--medium-gray);
+  }
+  .selected:hover {
+    background: var(--common-blue);
+  }
+  
+  .selected {
+    background: var(--common-blue);
+    color: var(--white);
+    box-shadow: 0 0 4px var(--dim-gray);
+  }
+  
+  .dropDown {
+    font-size: 1.2rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    padding: 1rem 0;
+    border-top: 1px solid var(--medium-gray);
+    border-bottom: 1px solid var(--medium-gray);
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+  
+  select {
+    width: 90px;
+    max-width: 85px;
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: 500;
+    height: 30px;
+    cursor: pointer;
+  }
+  

@@ -1,0 +1,31 @@
+.questionsBox{
+    width: 600px;
+    max-width: 600px;
+    height: fit-content;
+}
+
+.category{
+    background: rgb(228, 228, 228);
+    color: black;
+    padding: .2rem 1rem .2rem .2rem;
+    gap: .7rem;
+    border-radius: .9rem;
+    justify-content: flex-start;
+    font-size: .75rem !important;
+}
+
+.category div{
+    overflow: hidden;
+    width: 20px;
+    height: 20px;
+    background: white;
+}
+.questions{
+    animation: slide .3s linear;
+    transition: opacity .3s ease-in;
+}
+
+@keyframes slide {
+    from{transform: translateX(4rem);opacity: 0;}
+    to{transform: translateX(0);opacity: 1;}
+}

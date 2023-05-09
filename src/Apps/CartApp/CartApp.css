@@ -1,0 +1,91 @@
+.loader{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+}
+.loader img{
+  width: 10rem;
+}
+.brand {
+    display: flex;
+    gap: 0.6rem;
+  }
+.brand span {
+    font-weight: 500;
+    padding: 0 0.2rem;
+  }
+
+  .brand .brandname {
+    border-radius: 3rem;
+    font-size: 0.83rem;
+    padding: 0.2rem 0.8rem;
+    background: rgb(219, 219, 219);
+  }
+  .CartItemsBox{
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    padding: 0 2rem;
+    min-width: 70%;
+  }
+
+  .emptyCartBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem
+  }
+  .emptyCartBox img{
+    width: 30rem;
+  }
+  .emptyCartBox button{
+    padding: 1rem 2rem;
+    border: none;
+    font-size:1.5rem;
+    cursor: pointer;
+    border-radius: .4rem;
+    background: #fec13a;
+    color: white;
+    margin-top: 2rem;
+  }
+  .font100{
+    font-size: .74rem !important;
+  }
+  .underline{
+    text-decoration: underline;
+  }
+  .font200{
+    font-size: .9rem;
+  }
+  .inline-block{
+    display: inline-block;
+  }
+  .py-1{
+    padding: 1rem 0;
+  }
+  .flex{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap:.5rem;
+  }
+  .justifycenter{
+    justify-content: center;
+  }
+  .CartBox{
+    display: flex;
+    min-width: 100vw;
+  }
+  .width3{
+    width: 3rem;
+  }
+  .width2{
+    width: 2rem;
+  }
+  .green200{
+    color: rgb(19, 175, 19);
+  }
