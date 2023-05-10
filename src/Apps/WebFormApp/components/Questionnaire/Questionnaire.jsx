@@ -42,7 +42,6 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
 
         if (selectedOptions[currQuesId] && selectedOptions[currQuesId].length > 0) {
 
-            console.log(comment);
             if (comment[currQuesId] && (questionnaire.questions[questionNo].comments.length === 0 || questionnaire.questions[questionNo].comments.filter(comm => comm.uId)[0].comment !== comment[currQuesId])) {
                 setloading(true)
                 let updatedQuestionnaire = await putComment(currQuesId, comment[currQuesId]);
@@ -50,15 +49,12 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
 
                 if (!updatedQuestionnaire) return
                 setQuestionnaire(updatedQuestionnaire);
-
             }
-
 
             if ((questionNo + 1) < questionnaire.questions.length) {
                 setQuestionNo(questionNo + 1)
             }
             else {
-
                 // Submitting the test
                 setloading(true)
                 let score = await submitTest(selectedOptions);
