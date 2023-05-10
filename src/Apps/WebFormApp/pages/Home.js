@@ -1,33 +1,40 @@
 import React, { useEffect, useState } from 'react'
-import questionnaireJSON from '../Data/QuestionnaireData.json'
 import Questionnaire from '../components/Questionnaire/Questionnaire';
 import StartTest from '../components/StartTest/StartTest';
 import { useNavigate } from 'react-router-dom';
+import ResultBox from '../components/Result/ResultBox';
 
 const Home = ({ user, setUser, loading }) => {
 
-  const navigate = useNavigate()
-  const [isStarted, setIsStarted] = useState(false);
-  const [questionnaire, setQuestionnaire] = useState(questionnaireJSON);
-  const [score, setScore] = useState({});
+  const navigate = useNavigate();
 
-  useEffect(() =>{
-    if(user){
-      if(user.isStarted){
+  const [isStarted, setIsStarted] = useState(false);
+  const [questionnaire, setQuestionnaire] = useState([]);
+  const [score, setScore] = useState({});
+  const [testEnded, setTestEnded] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState({})
+
+  useEffect(() => {
+    if (user) {
+      if (user.isStarted && !isStarted) {
         user.isSubmitted ? navigate('/submitted') : navigate('/activity-not-allowed')
       }
     }
     // eslint-disable-next-line
-  },[user])
+  }, [user])
 
   return (
     <div>
       {
-        isStarted
+        !testEnded
           ?
-          <Questionnaire questionnaire={questionnaire} setScore={setScore} setQuestionnaire={setQuestionnaire} score={score}/>
+          isStarted
+            ?
+            <Questionnaire setTestEnded={setTestEnded} questionnaire={questionnaire} setScore={setScore} setQuestionnaire={setQuestionnaire} score={score} selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} />
+            :
+            <StartTest setIsStarted={setIsStarted} user={user} setUser={setUser} loading={loading} setQuestionnaire={setQuestionnaire} />
           :
-          <StartTest setIsStarted={setIsStarted} user={user} setUser={setUser} loading={loading}/>
+          <ResultBox user={user} score={score} totalQuestions={questionnaire.questions.length} attempted={Object.keys(selectedOptions).length}/>
       }
     </div>
   )

@@ -7,70 +7,96 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import './Questionnaire.css'
 import AssesmentTitle from '../AssesmentTitle'
 import Timer from '../Utils/Timer';
-import { submitTest } from '../../Helpers/AsyncCalls';
-import { useNavigate } from 'react-router-dom';
+import { putComment, submitTest } from '../../Helpers/AsyncCalls';
+// import { getTotalScore } from '../../Helpers/helpers';
+import LoadingButton from '@mui/lab/LoadingButton';
 
-const Questionnaire = ({ questionnaire, setScore, score }) => {
+const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedOptions, setSelectedOptions, setQuestionnaire }) => {
 
-    const [selectedOptions, setSelectedOptions] = useState({})
     const [questionNo, setQuestionNo] = useState(0);
     const [errorText, setErrorText] = useState(false);
-    const navigate = useNavigate()
+    const [loading, setloading] = useState(false);
+    const [currQuesId, setCurrQuestionId] = useState(questionnaire.questions[0].id);
+
+    useEffect(() => {
+        setCurrQuestionId(questionnaire.questions[questionNo].id)
+    }, [questionNo, questionnaire.questions])
 
     const handleToggle = (value) => {
 
         setErrorText(false)
 
-        if (selectedOptions[questionNo]) {
-            if (selectedOptions[questionNo].includes(value)) setSelectedOptions({ ...selectedOptions, [questionNo]: selectedOptions[questionNo].filter(ans => ans !== value) })
-            else setSelectedOptions({ ...selectedOptions, [questionNo]: [...selectedOptions[questionNo], value] })
+        if (selectedOptions[currQuesId]) {
+            if (selectedOptions[currQuesId].includes(value)) setSelectedOptions({ ...selectedOptions, [currQuesId]: selectedOptions[currQuesId].filter(ans => ans !== value) })
+            else setSelectedOptions({ ...selectedOptions, [currQuesId]: [...selectedOptions[currQuesId], value] })
         }
         else {
-            setSelectedOptions({ ...selectedOptions, [questionNo]: [value] })
+            setSelectedOptions({ ...selectedOptions, [currQuesId]: [value] })
         }
     }
 
     const [comment, setComment] = useState({})
 
-    const handleChangeComment = (e) => setComment({ ...comment, [questionNo]: e.target.value });
+    const handleChangeComment = (e) => setComment({ ...comment, [currQuesId]: e.target.value });
 
     const handleNext = async () => {
 
         // setScore(score - 10)
 
-        if (selectedOptions[questionNo] && selectedOptions[questionNo].length > 0) {
+        // let localScore = score
 
-            let correctAnswersArray = questionnaire.questions[questionNo].answers.filter(ans => ans.isCorrect).map(ans => ans.answer);
+        if (selectedOptions[currQuesId] && selectedOptions[currQuesId].length > 0) {
 
-            // console.log(selectedOptions[questionNo], questionNo, correctAnswersArray);
+            // console.log(questionnaire.questions[questionNo].comments.filter(comm => comm.uId)[0].comment);
 
-            let correctAnswersSelected = selectedOptions[questionNo].reduce((correct, ans) => {
-                if (correctAnswersArray.indexOf(ans) !== -1) correct++
-                return correct
-            }, 0)
+            console.log(comment);
+            if (comment[currQuesId] && (questionnaire.questions[questionNo].comments.length === 0 || questionnaire.questions[questionNo].comments.filter(comm => comm.uId)[0].comment !== comment[currQuesId])) {
+                setloading(true)
+                let updatedQuestionnaire = await putComment(currQuesId, comment[currQuesId]);
+                setloading(false)
 
-            if (correctAnswersArray.length === correctAnswersSelected && correctAnswersArray.length === selectedOptions[questionNo].length) setScore({ ...score, [questionNo]: 10 })
-            else setScore(Object.keys(score)
-                .filter((key) => !key.includes(questionNo))
-                .reduce((obj, key) => {
-                    return Object.assign(obj, {
-                        [key]: score[key]
-                    });
-                }, {}));
+                if (!updatedQuestionnaire) return
+                setQuestionnaire(updatedQuestionnaire);
+                
+            }
+
+            // let correctAnswersArray = questionnaire.questions[questionNo].answers.filter(ans => ans.isCorrect).map(ans => ans.answer);
+
+            // // console.log(selectedOptions[questionNo], questionNo, correctAnswersArray);
+
+            // let correctAnswersSelected = selectedOptions[currQuesId].reduce((correct, ans) => {
+            //     if (correctAnswersArray.indexOf(ans) !== -1) correct++
+            //     return correct
+            // }, 0)
+
+            // if (correctAnswersArray.length === correctAnswersSelected && correctAnswersArray.length === selectedOptions[currQuesId].length) {
+            //     localScore = { ...score, [questionNo]: 10 }
+            //     setScore({ ...score, [questionNo]: 10 })
+            // }
+            // else setScore(Object.keys(score)
+            //     .filter((key) => !key.includes(questionNo))
+            //     .reduce((obj, key) => {
+            //         return Object.assign(obj, {
+            //             [key]: score[key]
+            //         });
+            //     }, {}));
 
 
             if ((questionNo + 1) < questionnaire.questions.length) {
                 setQuestionNo(questionNo + 1)
             }
             else {
-                let TotalScore = Object.keys(score).reduce((Total, key) => {
-                    Total += score[key]
-                    return Total
-                }, 0)
-
+                // let TotalScore = getTotalScore(localScore)
                 // console.log("Your Score is: ", TotalScore);
-               let res = await submitTest(TotalScore)
-               if(res) navigate('/submitted')
+
+                // Submitting the test
+                setloading(true)
+                let score = await submitTest(selectedOptions);
+                if (score) {
+                    setTestEnded(true)
+                    setloading(false)
+                    setScore(score)
+                }
 
             }
         }
@@ -83,9 +109,9 @@ const Questionnaire = ({ questionnaire, setScore, score }) => {
         // score && setScore(score - 10)
     }
 
-    useEffect(() => {
+    // useEffect(() => {
 
-    }, [questionnaire])
+    // }, [questionnaire])
 
     function isLastQuestion() {
         return questionNo === questionnaire.questions.length - 1
@@ -105,7 +131,7 @@ const Questionnaire = ({ questionnaire, setScore, score }) => {
                         <span>{questionnaire.questions[questionNo].category}</span>
                     </div>
 
-                    <Timer min={questionnaire.timeLimit.minutes} hours={questionnaire.timeLimit.hours} />
+                    <Timer setScore={setScore} setTestEnded={setTestEnded} setloading={setloading} min={questionnaire.timeLimit.minutes} hours={questionnaire.timeLimit.hours} selectedOptions={selectedOptions}/>
 
                 </div>
                 {
@@ -118,10 +144,10 @@ const Questionnaire = ({ questionnaire, setScore, score }) => {
                                 </div>
                                 <div className="options flex flex-col gap-1">
                                     {
-                                        q.answers.map((item, i) =>
+                                        q.options.map((opt, i) =>
                                             <ListItem
                                                 className='bg-slate-100'
-                                                key={i}
+                                                key={opt.id}
                                                 secondaryAction={
                                                     <IconButton edge="end" aria-label="comments">
 
@@ -129,17 +155,16 @@ const Questionnaire = ({ questionnaire, setScore, score }) => {
                                                 }
                                                 disablePadding
                                             >
-                                                <ListItemButton role={undefined} dense onClick={() => handleToggle(item.answer)}>
+                                                <ListItemButton role={undefined} dense onClick={() => handleToggle(opt.option)}>
                                                     <ListItemIcon>
                                                         <Checkbox
                                                             edge="start"
-                                                            checked={(selectedOptions[questionNo] ? selectedOptions[questionNo].includes(item.answer) : false)}
+                                                            checked={(selectedOptions[currQuesId] ? selectedOptions[currQuesId].includes(opt.option) : false)}
                                                             tabIndex={-1}
-                                                            // disableRipple
-                                                            inputProps={{ 'aria-labelledby': item.answer }}
+                                                            inputProps={{ 'aria-labelledby': opt.option }}
                                                         />
                                                     </ListItemIcon>
-                                                    <ListItemText id={2} primary={item.answer} />
+                                                    <ListItemText id={2} primary={opt.option} />
                                                 </ListItemButton>
                                             </ListItem>)
                                     }
@@ -157,11 +182,11 @@ const Questionnaire = ({ questionnaire, setScore, score }) => {
                 <div className="commentBox w-full mt-5 border-t border-t-cyan-900 pt-3">
                     <p className='font-semibold text-xs text-left mb-2 text-gray-600'>If you find any question incorrect or the options are incorrect, or if you have any feedback about a particular question, please comment below 👇</p>
                     <TextField
-                        className='w-full'
+                        className='w-full text-sm'
                         id="filled-multiline-static"
                         label="Your comment"
                         multiline
-                        value={comment[questionNo] ?? ""}
+                        value={comment[currQuesId] ?? ""}
                         onChange={handleChangeComment}
                         rows={2}
                         variant="filled"
@@ -171,9 +196,19 @@ const Questionnaire = ({ questionnaire, setScore, score }) => {
                     <Button disabled={!questionNo} onClick={handlePrevious} variant="contained" size="medium" className='w-36' startIcon={<><NavigateBeforeIcon /></>}>
                         Previous
                     </Button>
-                    <Button onClick={handleNext} variant="contained" size="medium" className={`w-36`} endIcon={!isLastQuestion() ? <NavigateNextIcon /> : <ExitToAppIcon />}>
-                        {isLastQuestion() ? "End test" : "Next"}
-                    </Button>
+                    <LoadingButton
+                        color="primary"
+                        loading={loading}
+                        loadingPosition="center"
+                        onClick={handleNext}
+                        variant="contained"
+                        size="medium"
+                        className={`w-36`}
+                        endIcon={!loading && (!isLastQuestion() ? <NavigateNextIcon /> : <ExitToAppIcon />)}>
+                        {
+                            !isLastQuestion() ? 'Next' : 'End Test'
+                        }
+                    </LoadingButton>
                 </div>
             </div>
         </Container>

@@ -1,8 +1,17 @@
 import { Container } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Submiited = ({user}) => {
+
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(!user || !user.isSubmitted) navigate('/')
+  },[user,navigate]);
+
   return (
+    user
+    &&
     <Container maxWidth="xl" className='StartTestContainer p-0' sx={{ display: 'flex', justifyContent: "center" }}>
       <div className='bg-white py-3 px-1 md:px-16 mt-2 pt-8 shadow-lg rounded-sm'>
         <div className='flex items-center flex-col gap-1'>

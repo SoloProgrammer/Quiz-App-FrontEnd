@@ -4,10 +4,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import './StartTest.css'
 import { TextField } from '@mui/material';
 import { JsIcon, reactIcon } from '../../StaticImages/Icons';
-import { createtUser } from '../../Helpers/AsyncCalls';
+import { createtUser, getQuestionnaire } from '../../Helpers/AsyncCalls';
 import { useNavigate } from 'react-router-dom';
 
-const StartTest = ({ setIsStarted, setUser, loading }) => {
+const StartTest = ({ setIsStarted, setUser, loading, setQuestionnaire }) => {
 
   const navigate = useNavigate()
 
@@ -42,17 +42,16 @@ const StartTest = ({ setIsStarted, setUser, loading }) => {
       e.target.textContent = "Preparing your test..."
       let data = await createtUser(inputFiled.name, inputFiled.email);
 
-      if (!data.status || !data.userExists) {
-        e.target.textContent = "Start the test..."
-        setInputField(defaultInputvals);
+      localStorage.setItem('token', data.token)
+      
+      if (!data.userExists) {
+        let questionnaire = await getQuestionnaire();
+        setQuestionnaire(questionnaire);
+        data.newUser && setIsStarted(true);
+        setUser(data.newUser)
       }
-
-      setIsDisabled(false);
-
-      setUser(data.user)
-
-      if (!data.userExists) setIsStarted(true)
       else {
+        setUser(data.user)
         if (data.user.isStarted) {
           data.user.isSubmitted ? navigate('/submitted') : navigate('/activity-not-allowed')
         }
@@ -68,12 +67,12 @@ const StartTest = ({ setIsStarted, setUser, loading }) => {
         {
           loading
             ?
-            <>  
+            <>
 
-            <div className='w-full h-full bg-white flex items-center justify-center'>
+              <div className='w-full h-full bg-white flex items-center justify-center'>
                 <img className='w-44' src="https://cdn.dribbble.com/users/1186261/screenshots/3718681/_______.gif" alt="loading" />
-            </div>
-            
+              </div>
+
             </>
             :
             <div className="p-3 shadow-md rounded-sm  bg-white md:p-10 md:w-f startTestBox">
