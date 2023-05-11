@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import './StartTest.css'
 import { TextField } from '@mui/material';
-import { JsIcon, reactIcon } from '../../StaticImages/Icons';
+import { JsIcon, loadingGif, reactIcon } from '../../StaticImages/Icons';
 import { createtUser, getQuestionnaire } from '../../Helpers/AsyncCalls';
 import { useNavigate } from 'react-router-dom';
 
@@ -70,7 +70,7 @@ const StartTest = ({ setIsStarted, setUser, loading, setQuestionnaire }) => {
             <>
 
               <div className='w-full h-full bg-white flex items-center justify-center'>
-                <img className='w-44' src="https://cdn.dribbble.com/users/1186261/screenshots/3718681/_______.gif" alt="loading" />
+                <img className='w-44' src={loadingGif} alt="loading" />
               </div>
 
             </>

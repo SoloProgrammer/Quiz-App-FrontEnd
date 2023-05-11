@@ -1,3 +1,6 @@
 export const reactIcon = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png"
 export const JsIcon = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/480px-Unofficial_JavaScript_logo_2.svg.png"
 export const accessDeniedImg = "https://cdn-icons-png.flaticon.com/512/2996/2996824.png"
+export const loadingGif = "https://cdn.dribbble.com/users/1186261/screenshots/3718681/_______.gif"
+export const fillBlueTickImg = "https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
+export const outlineGreenTickImg = "https://cdn-icons-png.flaticon.com/512/8968/8968524.png"

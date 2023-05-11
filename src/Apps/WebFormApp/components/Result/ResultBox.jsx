@@ -1,10 +1,8 @@
 import { Container } from '@mui/material'
 import React from 'react'
 import './ResultBox.css'
-// import { getTotalScore } from '../../Helpers/helpers';
+import { outlineGreenTickImg } from '../../StaticImages/Icons'
 const ResultBox = ({ user, score, totalQuestions, attempted }) => {
-
-    // const Totalscore = getTotalScore(score);
 
     return (
         <Container maxWidth="xl" sx={{ display: 'flex', height: "100vh", justifyContent: "center", alignItems: "center" }}>
@@ -12,7 +10,7 @@ const ResultBox = ({ user, score, totalQuestions, attempted }) => {
                 <div className='mb-7'>
                     <h4 className='text-4xl roboto text-gray-600 mb-3'>Thanks for your time</h4>
                     <h5 className='text-xs font-bold text-green-500'>Dear Candidate, your test has been successfully submitted.
-                        <span><img className='w-8 mr-3 inline-block' src="https://cdn-icons-png.flaticon.com/512/8968/8968524.png" alt="" /></span>
+                        <span><img className='w-8 mr-3 inline-block' src={outlineGreenTickImg} alt="" /></span>
                         <br />
                         <span className='mt-1 text-gray-500'>You can view your statistics below.</span></h5>
                 </div>
@@ -31,7 +29,6 @@ const ResultBox = ({ user, score, totalQuestions, attempted }) => {
                         <div className="value text-left flex flex-col gap-3">
                             <p>{totalQuestions}</p>
                             <p>{attempted}</p>
-                            {/* <p>{Object.keys(score).length}</p> */}
                             <p>{score/10}</p>
                         </div>
                     </div>
