@@ -8,6 +8,7 @@ import './Questionnaire.css'
 import AssesmentTitle from '../AssesmentTitle'
 import Timer from '../Utils/Timer';
 import { putComment, submitTest } from '../../Helpers/AsyncCalls';
+// import { getTotalScore } from '../../Helpers/helpers';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedOptions, setSelectedOptions, setQuestionnaire }) => {
@@ -15,10 +16,10 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
     const [questionNo, setQuestionNo] = useState(0);
     const [errorText, setErrorText] = useState(false);
     const [loading, setloading] = useState(false);
-    const [currQuesId, setCurrQuestionId] = useState(questionnaire.questions[0].id);
+    const [currQuesId, setCurrQuestionId] = useState(questionnaire.questions[0]._id);
 
     useEffect(() => {
-        setCurrQuestionId(questionnaire.questions[questionNo].id)
+        setCurrQuestionId(questionnaire.questions[questionNo]._id)
     }, [questionNo, questionnaire.questions])
 
     const handleToggle = (value) => {
@@ -40,24 +41,54 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
 
     const handleNext = async () => {
 
+        // setScore(score - 10)
+
+        // let localScore = score
+
         if (selectedOptions[currQuesId] && selectedOptions[currQuesId].length > 0) {
 
             if (comment[currQuesId] && (questionnaire.questions[questionNo].comments.length === 0 || questionnaire.questions[questionNo].comments.filter(comm => comm.uId)[0].comment !== comment[currQuesId])) {
                 setloading(true)
-                let updatedQuestionnaire = await putComment(currQuesId, comment[currQuesId]);
+                let updatedQuestionnaire = await putComment(currQuesId, comment[currQuesId], questionnaire.questionnaire_id);
                 setloading(false)
 
                 if (!updatedQuestionnaire) return
                 setQuestionnaire(updatedQuestionnaire);
+
             }
+
+            // let correctAnswersArray = questionnaire.questions[questionNo].answers.filter(ans => ans.isCorrect).map(ans => ans.answer);
+
+            // // console.log(selectedOptions[questionNo], questionNo, correctAnswersArray);
+
+            // let correctAnswersSelected = selectedOptions[currQuesId].reduce((correct, ans) => {
+            //     if (correctAnswersArray.indexOf(ans) !== -1) correct++
+            //     return correct
+            // }, 0)
+
+            // if (correctAnswersArray.length === correctAnswersSelected && correctAnswersArray.length === selectedOptions[currQuesId].length) {
+            //     localScore = { ...score, [questionNo]: 10 }
+            //     setScore({ ...score, [questionNo]: 10 })
+            // }
+            // else setScore(Object.keys(score)
+            //     .filter((key) => !key.includes(questionNo))
+            //     .reduce((obj, key) => {
+            //         return Object.assign(obj, {
+            //             [key]: score[key]
+            //         });
+            //     }, {}));
+
 
             if ((questionNo + 1) < questionnaire.questions.length) {
                 setQuestionNo(questionNo + 1)
             }
             else {
+                // let TotalScore = getTotalScore(localScore)
+                // console.log("Your Score is: ", TotalScore);
+
                 // Submitting the test
                 setloading(true)
-                let score = await submitTest(selectedOptions);
+                let score = await submitTest(selectedOptions, questionnaire.questionnaire_id);
                 if (score) {
                     setTestEnded(true)
                     setloading(false)
@@ -75,6 +106,9 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
         // score && setScore(score - 10)
     }
 
+    // useEffect(() => {
+
+    // }, [questionnaire])
 
     function isLastQuestion() {
         return questionNo === questionnaire.questions.length - 1
@@ -94,13 +128,13 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
                         <span>{questionnaire.questions[questionNo].category}</span>
                     </div>
 
-                    <Timer setScore={setScore} setTestEnded={setTestEnded} setloading={setloading} min={questionnaire.timeLimit.minutes} hours={questionnaire.timeLimit.hours} selectedOptions={selectedOptions} />
+                    <Timer setScore={setScore} setTestEnded={setTestEnded} setloading={setloading} min={questionnaire.timeLimit.minutes} hours={questionnaire.timeLimit.hours} selectedOptions={selectedOptions} questionnaire_id={questionnaire.questionnaire_id} />
 
                 </div>
                 {
                     questionnaire.questions.map((q, i) => {
                         return (
-                            <div key={q.id} className={`questions pt-4 pb-5 relative ${i !== questionNo && 'hidden'}`}>
+                            <div key={q._id} className={`questions pt-4 pb-5 relative ${i !== questionNo && 'hidden'}`}>
                                 <span className='absolute top-1 right-1 text-sm  text-blue-500 roboto'><b><span>Question</span>: {questionNo + 1}</b> of <b>{questionnaire.questions.length}</b></span>
                                 <div className="question">
                                     <h1 className='text-xl my-3 font-semibold text-left text-gray-600 '><span className='question_num'>{i + 1} )</span> {q.question}</h1>

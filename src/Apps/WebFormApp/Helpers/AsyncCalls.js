@@ -33,8 +33,8 @@ export const createtUser = async (name, email) => {
     return json
 }
 
-export const submitTest = async (selectedOptions) => {
-    const res = await fetch(`${server.URL.local}/api/test/submit`, {
+export const submitTest = async (selectedOptions, questionnaire_id) => {
+    const res = await fetch(`${server.URL.local}/api/test/submit/${questionnaire_id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -56,7 +56,8 @@ export const submitTest = async (selectedOptions) => {
 }
 
 export const getQuestionnaire = async () => {
-    const res = await fetch(`${server.URL.local}/api/test/questions`, {
+    let questionnaire_id = "React_and_JS_skills_questionnaire";
+    const res = await fetch(`${server.URL.local}/api/test/questionnaire/${questionnaire_id}`, {
         headers: {
             token: localStorage.getItem('token')
         }
@@ -69,8 +70,8 @@ export const getQuestionnaire = async () => {
     return json.questionnaire
 }
 
-export const putComment = async (qId, comment) => {
-    const res = await fetch(`${server.URL.local}/api/test/question/${qId}/comment`, {
+export const putComment = async (qId, comment, questionnaire_id) => {
+    const res = await fetch(`${server.URL.local}/api/test/question/${qId}/comment/${questionnaire_id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

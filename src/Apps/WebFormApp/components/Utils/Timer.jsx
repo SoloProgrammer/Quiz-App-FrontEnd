@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { submitTest } from '../../Helpers/AsyncCalls';
 
-const Timer = ({ min, hours, selectedOptions, setTestEnded, setScore, setloading }) => {
+const Timer = ({ min, hours, selectedOptions, setTestEnded, setScore, setloading, questionnaire_id}) => {
 
     const handleTimeUp = async () => {
-        let score = await submitTest(selectedOptions);
+        let score = await submitTest(selectedOptions,questionnaire_id);
         if (typeof score === 'number') {
             setTestEnded(true)
             setScore(score)
