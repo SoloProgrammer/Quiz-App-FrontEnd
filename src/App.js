@@ -1,12 +1,12 @@
 import './App.css';
 import { BrowserRouter as Router } from 'react-router-dom'
-import WebFormApp from './Apps/WebFormApp/WebFormApp';
+import QuizApp from './Apps/WebFormApp/QuizApp';
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <WebFormApp/>
+        <QuizApp/>
       </Router>
     </div>
   );

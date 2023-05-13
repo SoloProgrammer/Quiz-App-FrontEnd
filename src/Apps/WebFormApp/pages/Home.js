@@ -30,7 +30,7 @@ const Home = ({ user, setUser, loading }) => {
           ?
           isStarted
             ?
-            <Questionnaire setTestEnded={setTestEnded} questionnaire={questionnaire} setScore={setScore} setQuestionnaire={setQuestionnaire} score={score} selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} />
+            <Questionnaire user={user} setTestEnded={setTestEnded} testEnded={testEnded} questionnaire={questionnaire} setScore={setScore} setQuestionnaire={setQuestionnaire} score={score} selectedOptions={selectedOptions} setSelectedOptions={setSelectedOptions} />
             :
             <StartTest setIsStarted={setIsStarted} user={user} setUser={setUser} loading={loading} setQuestionnaire={setQuestionnaire} />
           :

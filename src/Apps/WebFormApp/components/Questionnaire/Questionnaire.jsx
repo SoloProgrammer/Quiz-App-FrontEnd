@@ -11,7 +11,7 @@ import { putComment, submitTest } from '../../Helpers/AsyncCalls';
 // import { getTotalScore } from '../../Helpers/helpers';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedOptions, setSelectedOptions, setQuestionnaire }) => {
+const Questionnaire = ({ user,questionnaire, setScore, setTestEnded, selectedOptions, setSelectedOptions, setQuestionnaire }) => {
 
     const [questionNo, setQuestionNo] = useState(0);
     const [errorText, setErrorText] = useState(false);
@@ -27,7 +27,16 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
         setErrorText(false)
 
         if (selectedOptions[currQuesId]) {
-            if (selectedOptions[currQuesId].includes(value)) setSelectedOptions({ ...selectedOptions, [currQuesId]: selectedOptions[currQuesId].filter(ans => ans !== value) })
+            if (selectedOptions[currQuesId].includes(value)) {
+                if (selectedOptions[currQuesId].length === 1) {
+                    let selectedOptionsCopy = { ...selectedOptions };
+                    Object.keys(selectedOptions).forEach(questionId => {
+                        if (questionId === currQuesId) delete selectedOptionsCopy[currQuesId]
+                    })
+                    setSelectedOptions(selectedOptionsCopy)
+                }
+                else setSelectedOptions({ ...selectedOptions, [currQuesId]: selectedOptions[currQuesId].filter(ans => ans !== value) })
+            }
             else setSelectedOptions({ ...selectedOptions, [currQuesId]: [...selectedOptions[currQuesId], value] })
         }
         else {
@@ -47,7 +56,10 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
 
         if (selectedOptions[currQuesId] && selectedOptions[currQuesId].length > 0) {
 
-            if (comment[currQuesId] && (questionnaire.questions[questionNo].comments.length === 0 || questionnaire.questions[questionNo].comments.filter(comm => comm.uId)[0].comment !== comment[currQuesId])) {
+            const commentsByQid = questionnaire.questions[questionNo].comments;
+            const commentByUid = commentsByQid.filter(comm => comm.uId === user._id)
+
+            if (comment[currQuesId] && (commentsByQid.length === 0 || (commentByUid.length > 0 && commentByUid[0].comment !== comment[currQuesId]))) {
                 setloading(true)
                 let updatedQuestionnaire = await putComment(currQuesId, comment[currQuesId], questionnaire.questionnaire_id);
                 setloading(false)
@@ -152,7 +164,7 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
                                                 }
                                                 disablePadding
                                             >
-                                                <ListItemButton role={undefined} dense onClick={() => handleToggle(opt.option)}>
+                                                <ListItemButton disabled={loading} role={undefined} dense onClick={() => handleToggle(opt.option)}>
                                                     <ListItemIcon>
                                                         <Checkbox
                                                             edge="start"
@@ -179,6 +191,7 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
                 <div className="commentBox w-full mt-5 border-t border-t-cyan-900 pt-3">
                     <p className='font-semibold text-xs text-left mb-2 text-gray-600'>If you find any question incorrect or the options are incorrect, or if you have any feedback about a particular question, please comment below 👇</p>
                     <TextField
+                        disabled={loading}
                         className='w-full text-sm'
                         id="filled-multiline-static"
                         label="Your comment"
@@ -190,7 +203,7 @@ const Questionnaire = ({ questionnaire, setScore, score, setTestEnded, selectedO
                     />
                 </div>
                 <div className="nextBtn mt-3 flex justify-between">
-                    <Button disabled={!questionNo} onClick={handlePrevious} variant="contained" size="medium" className='w-36' startIcon={<><NavigateBeforeIcon /></>}>
+                    <Button disabled={!questionNo || loading} onClick={handlePrevious} variant="contained" size="medium" className='w-36' startIcon={<><NavigateBeforeIcon /></>}>
                         Previous
                     </Button>
                     <LoadingButton

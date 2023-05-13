@@ -1,9 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
 
+:root{
+    --light-purple:rgb(223 217 248) !important
+}
 body{
     min-height: 95vh;
     background: rgb(217, 230, 248) !important;
+    background-color: var(--light-purple) !important;
     font-family: 'Raleway', sans-serif !important;
+}
+::selection{
+    background: var(--light-purple) !important; 
 }
 .MuiFormHelperText-root {
     margin-left: .2rem !important;
