@@ -22,7 +22,7 @@ const NotAllowed = ({ user }) => {
                     Your account was blocked
                 </div>
                 <div className='text-xs font-bold my-5 text-center'>
-                    <p className='text-red-500'>As you attempt to re-start the test manually by reloading/refreshing the page or by doing some non-permitted activities!</p>
+                    <p className='text-red-500 bg-purple-100 px-1 w-fit'>As you attempt to re-start the test manually by reloading/refreshing the page or by doing some non-permitted activities!</p>
                     <p className='text-gray-500 mt-1 text-sm md:text-lg'>Which is why from now itself we have disbaled your account permananetly for the test</p>
                 </div>
             </div>

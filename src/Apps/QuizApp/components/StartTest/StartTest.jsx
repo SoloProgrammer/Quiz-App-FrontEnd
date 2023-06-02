@@ -69,7 +69,7 @@ const StartTest = ({ setIsStarted, setUser, loading, setQuestionnaire }) => {
             ?
             <>
 
-              <div className='w-full h-full bg-white flex items-center justify-center'>
+              <div className='fit-screen h-full bg-white flex items-center justify-center'>
                 <img className='w-44' src={loadingGif} alt="loading" />
               </div>
 
@@ -85,7 +85,7 @@ const StartTest = ({ setIsStarted, setUser, loading, setQuestionnaire }) => {
                   <li className='font-medium text-left list-disc mx-4 text-sm'>10 points is rewarded for the correct answer</li>
                   <li className='font-medium text-left list-disc mx-4 text-sm'>Each question has four options you can choose multiple of them as your asnwer</li>
                   <li className='font-medium text-left list-disc mx-4 text-sm'>Once test has been started you will not be able to re-start the test</li>
-                  <li className='text-left list-disc mx-4 text-sm roboto font-medium text-red-500'>If you tried to refresh/reload the page you will not allowed for re-test!</li>
+                  <li className='text-left list-disc mx-4 text-sm roboto font-medium text-red-500 bg-purple-100 w-fit px-1'>If you tried to refresh/reload the page you will not allowed for re-test!</li>
                   <li className='text-left list-disc mx-4 text-sm font-medium'>You need to finish the test under 15 minutes</li>
                 </ul>
               </div>

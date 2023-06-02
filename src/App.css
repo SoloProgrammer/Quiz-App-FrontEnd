@@ -19,7 +19,9 @@ a{
 .flex{
   display: flex;
 }
-
+.fit-screen{
+  min-width: 100vw;
+}
 .flex-center{
   display: flex;
   justify-content: center;

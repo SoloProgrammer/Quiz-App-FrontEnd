@@ -1,6 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router } from 'react-router-dom'
-import QuizApp from './Apps/WebFormApp/QuizApp';
+import QuizApp from './Apps/QuizApp/QuizApp';
 
 function App() {
   return (

@@ -7,8 +7,8 @@ import NotAllowed from './components/NotAllowed/NotAllowed'
 import Submitted from './components/Submitted/Submitted'
 const WebFormApp = () => {
 
-    const [user, setUser] = useState(null)
-    const [loading,setloading] = useState(true)
+    const [user, setUser] = useState(null);
+    const [loading, setloading] = useState(true);
 
     useEffect(() => {
         let token = localStorage.getItem('token')
@@ -25,9 +25,9 @@ const WebFormApp = () => {
     return (
         <>
             <Routes>
-                <Route exact path='/' element={<Home user={user} setUser={setUser} loading={loading}/>} />
-                <Route exact path='/activity-not-allowed' element={<NotAllowed user={user}/>}/>
-                <Route exact path='/submitted' element={<Submitted user={user}/>}/>
+                <Route exact path='/' element={<Home user={user} setUser={setUser} loading={loading} />} />
+                <Route exact path='/activity-not-allowed' element={<NotAllowed user={user} />} />
+                <Route exact path='/submitted' element={<Submitted user={user} />} />
             </Routes>
         </>
     )
