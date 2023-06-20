@@ -8,6 +8,7 @@ body{
     background: rgb(217, 230, 248) !important;
     background-color: var(--light-purple) !important;
     font-family: 'Raleway', sans-serif !important;
+    scroll-behavior: smooth;
 }
 ::selection{
     background: var(--light-purple) !important; 
@@ -20,4 +21,12 @@ body{
 }
 .roboto{
     font-family: roboto !important;
+}
+.shadow-bold{
+    box-shadow: 0 0 3px rgba(0,0,0,.4);
+}
+@media screen and (max-width:770px) {
+    html{
+        font-size: 93%;
+    }
 }

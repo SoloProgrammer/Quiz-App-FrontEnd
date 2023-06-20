@@ -1,26 +1,34 @@
 import { Button, Checkbox, Container, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { JsIcon, reactIcon } from '../../StaticImages/Icons'
+import { JsIcon, reactIcon } from '../../Icons_Images/Icons'
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import './Questionnaire.css'
-import AssesmentTitle from '../AssesmentTitle'
+import AssesmentTitle from '../Utils/AssesmentTitle'
 import Timer from '../Utils/Timer';
 import { putComment, submitTest } from '../../Helpers/AsyncCalls';
 // import { getTotalScore } from '../../Helpers/helpers';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { setScore, updateQuestionnare } from '../../Redux/Slices/QuestionnaireSlice';
 
-const Questionnaire = ({ user,questionnaire, setScore, setTestEnded, selectedOptions, setSelectedOptions, setQuestionnaire }) => {
+const Questionnaire = ({ setTestEnded, selectedOptions, setSelectedOptions }) => {
+
+    const dispatch = useDispatch();
+    const { questionnaire } = useSelector(state => state.questionnaire)
+    const { user } = useSelector(state => state.user)
+
 
     const [questionNo, setQuestionNo] = useState(0);
     const [errorText, setErrorText] = useState(false);
     const [loading, setloading] = useState(false);
-    const [currQuesId, setCurrQuestionId] = useState(questionnaire.questions[0]._id);
+    const [currQuesId, setCurrQuestionId] = useState(questionnaire?.questions[0]._id);
+
 
     useEffect(() => {
-        setCurrQuestionId(questionnaire.questions[questionNo]._id)
-    }, [questionNo, questionnaire.questions])
+        setCurrQuestionId(questionnaire?.questions[questionNo]._id)
+    }, [questionNo, questionnaire?.questions])
 
     const handleToggle = (value) => {
 
@@ -29,7 +37,8 @@ const Questionnaire = ({ user,questionnaire, setScore, setTestEnded, selectedOpt
         if (selectedOptions[currQuesId]) {
             if (selectedOptions[currQuesId].includes(value)) {
                 if (selectedOptions[currQuesId].length === 1) {
-                    let selectedOptionsCopy = { ...selectedOptions };
+                    // we created deep copy of the state as we can't manipulate the state directly!
+                    let selectedOptionsCopy = structuredClone(selectedOptions);
                     Object.keys(selectedOptions).forEach(questionId => {
                         if (questionId === currQuesId) delete selectedOptionsCopy[currQuesId]
                     })
@@ -42,6 +51,7 @@ const Questionnaire = ({ user,questionnaire, setScore, setTestEnded, selectedOpt
         else {
             setSelectedOptions({ ...selectedOptions, [currQuesId]: [value] })
         }
+
     }
 
     const [comment, setComment] = useState({})
@@ -50,61 +60,32 @@ const Questionnaire = ({ user,questionnaire, setScore, setTestEnded, selectedOpt
 
     const handleNext = async () => {
 
-        // setScore(score - 10)
-
-        // let localScore = score
-
         if (selectedOptions[currQuesId] && selectedOptions[currQuesId].length > 0) {
 
-            const commentsByQid = questionnaire.questions[questionNo].comments;
+            const commentsByQid = questionnaire?.questions[questionNo].comments;
             const commentByUid = commentsByQid.filter(comm => comm.uId === user._id)
 
             if (comment[currQuesId] && (commentsByQid.length === 0 || (commentByUid.length > 0 && commentByUid[0].comment !== comment[currQuesId]))) {
                 setloading(true)
-                let updatedQuestionnaire = await putComment(currQuesId, comment[currQuesId], questionnaire.questionnaire_id);
+                let updatedQuestionnaire = await putComment(currQuesId, comment[currQuesId], questionnaire?.questionnaire_id);
                 setloading(false)
 
                 if (!updatedQuestionnaire) return
-                setQuestionnaire(updatedQuestionnaire);
+                dispatch(updateQuestionnare(updatedQuestionnaire))
 
             }
 
-            // let correctAnswersArray = questionnaire.questions[questionNo].answers.filter(ans => ans.isCorrect).map(ans => ans.answer);
-
-            // // console.log(selectedOptions[questionNo], questionNo, correctAnswersArray);
-
-            // let correctAnswersSelected = selectedOptions[currQuesId].reduce((correct, ans) => {
-            //     if (correctAnswersArray.indexOf(ans) !== -1) correct++
-            //     return correct
-            // }, 0)
-
-            // if (correctAnswersArray.length === correctAnswersSelected && correctAnswersArray.length === selectedOptions[currQuesId].length) {
-            //     localScore = { ...score, [questionNo]: 10 }
-            //     setScore({ ...score, [questionNo]: 10 })
-            // }
-            // else setScore(Object.keys(score)
-            //     .filter((key) => !key.includes(questionNo))
-            //     .reduce((obj, key) => {
-            //         return Object.assign(obj, {
-            //             [key]: score[key]
-            //         });
-            //     }, {}));
-
-
-            if ((questionNo + 1) < questionnaire.questions.length) {
+            if ((questionNo + 1) < questionnaire?.questions.length) {
                 setQuestionNo(questionNo + 1)
             }
             else {
-                // let TotalScore = getTotalScore(localScore)
-                // console.log("Your Score is: ", TotalScore);
-
                 // Submitting the test
                 setloading(true)
-                let score = await submitTest(selectedOptions, questionnaire.questionnaire_id);
+                let score = await submitTest(selectedOptions, questionnaire?.questionnaire_id);
                 if (score) {
                     setTestEnded(true)
                     setloading(false)
-                    setScore(score)
+                    dispatch(setScore(score))
                 }
 
             }
@@ -115,15 +96,11 @@ const Questionnaire = ({ user,questionnaire, setScore, setTestEnded, selectedOpt
     const handlePrevious = () => {
         setErrorText(false)
         setQuestionNo(questionNo - 1)
-        // score && setScore(score - 10)
     }
 
-    // useEffect(() => {
-
-    // }, [questionnaire])
 
     function isLastQuestion() {
-        return questionNo === questionnaire.questions.length - 1
+        return questionNo === questionnaire?.questions.length - 1
     }
 
     return (
@@ -135,19 +112,19 @@ const Questionnaire = ({ user,questionnaire, setScore, setTestEnded, selectedOpt
                 <div className="questions--top flex justify-between px-2 py-2 border-b border-b-cyan-900 items-center">
                     <div className="category text-sm font-bold flex gap-1 items-center">
                         <div className='rounded-full overflow-hidden flex'>
-                            <img className='inline-block' src={questionnaire.questions[questionNo].category === "React" ? reactIcon : JsIcon} alt="react" />
+                            <img className='inline-block' src={questionnaire?.questions[questionNo].category === "React" ? reactIcon : JsIcon} alt="react" />
                         </div>
-                        <span>{questionnaire.questions[questionNo].category}</span>
+                        <span>{questionnaire?.questions[questionNo].category}</span>
                     </div>
 
-                    <Timer setScore={setScore} setTestEnded={setTestEnded} setloading={setloading} min={questionnaire.timeLimit.minutes} hours={questionnaire.timeLimit.hours} selectedOptions={selectedOptions} questionnaire_id={questionnaire.questionnaire_id} />
+                    <Timer setScore={setScore} setTestEnded={setTestEnded} setloading={setloading} min={questionnaire?.timeLimit.minutes} hours={questionnaire?.timeLimit.hours} selectedOptions={selectedOptions} questionnaire_id={questionnaire?.questionnaire_id} />
 
                 </div>
                 {
-                    questionnaire.questions.map((q, i) => {
+                    questionnaire?.questions.map((q, i) => {
                         return (
                             <div key={q._id} className={`questions pt-4 pb-5 relative ${i !== questionNo && 'hidden'}`}>
-                                <span className='absolute top-1 right-1 text-sm  text-blue-500 roboto'><b><span>Question</span>: {questionNo + 1}</b> of <b>{questionnaire.questions.length}</b></span>
+                                <span className='absolute top-1 right-1 text-sm  text-blue-500 roboto'><b><span>Question</span>: {questionNo + 1}</b> of <b>{questionnaire?.questions.length}</b></span>
                                 <div className="question">
                                     <h1 className='text-xl my-3 font-semibold text-left text-gray-600 '><span className='question_num'>{i + 1} )</span> {q.question}</h1>
                                 </div>

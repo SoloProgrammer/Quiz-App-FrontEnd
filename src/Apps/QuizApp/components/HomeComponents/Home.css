@@ -1,0 +1,6 @@
+.benifitDiv img,.singleQuiz img{
+    transition: .2s all;
+}
+.benifitDiv:hover img, .singleQuiz:hover img{
+    scale: 1.1;
+}

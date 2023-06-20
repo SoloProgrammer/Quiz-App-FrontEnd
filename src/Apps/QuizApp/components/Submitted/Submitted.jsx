@@ -1,14 +1,16 @@
 import { Container } from '@mui/material'
 import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { fillBlueTickImg } from '../../StaticImages/Icons';
+import { Link, useNavigate } from 'react-router-dom'
+import { fillBlueTickImg } from '../../Icons_Images/Icons';
+import { useSelector } from 'react-redux';
 
-const Submiited = ({user}) => {
+const Submiited = () => {
 
+  const { user } = useSelector(state => state.user)
   const navigate = useNavigate();
-  useEffect(()=>{
-    if(!user || !user.isSubmitted) navigate('/')
-  },[user,navigate]);
+  useEffect(() => {
+    if (!user || !user.isSubmitted) navigate('/')
+  }, [user,navigate]);
 
   return (
     user
@@ -25,6 +27,7 @@ const Submiited = ({user}) => {
         <div className='text-xs font-bold my-5 text-center'>
           <p className='text-blue-700'>You are not permitted to retake the test as it has already been submitted.</p>
         </div>
+        <Link to={'/'}>HOME</Link>
       </div>
     </Container>
   )

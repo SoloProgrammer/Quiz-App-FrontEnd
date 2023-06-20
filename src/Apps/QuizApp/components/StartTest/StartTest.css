@@ -1,4 +1,19 @@
 .startTestBox{
     max-height: 98% !important;
     overflow-y: auto !important;
+    position: relative;
+}
+.loadingQuiz::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    background: rgba(255,255,255,.4);
+    background-image: url('https://www.moltonbrown.eu/assets/Redesign/loading-icon.gif');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 130px;
+
 }

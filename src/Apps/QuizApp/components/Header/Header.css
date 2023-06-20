@@ -1,0 +1,29 @@
+.proflileHoverBox{
+    position: absolute;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    right: 0rem;
+    padding: .4rem 0;
+    top: 3.7rem;
+    transition: all .3s;
+    transform: translateY(-.3rem);
+    width: 110px;
+    opacity: 0;
+    visibility: hidden;
+}
+.proflileHoverBox a:hover{
+    background: #F5F7FA;
+}
+.proflileHoverBox a > p{
+    padding: .3rem 2rem;
+    padding-left: 1rem;
+    color: rgb(90, 102, 114);
+    font-size: 1rem;
+}
+
+.profile_icon:hover .proflileHoverBox{
+    transform: translate(0);
+    opacity: 1;
+    visibility: visible;
+}

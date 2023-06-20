@@ -1,8 +1,13 @@
 import { Container } from '@mui/material'
 import React from 'react'
 import './ResultBox.css'
-import { outlineGreenTickImg } from '../../StaticImages/Icons'
-const ResultBox = ({ user, score, totalQuestions, attempted }) => {
+import { outlineGreenTickImg } from '../../Icons_Images/Icons'
+import { useSelector } from 'react-redux'
+const ResultBox = ({ totalQuestions, attempted }) => {
+
+    let { score } = useSelector(state => state.questionnaire)
+    let { user } = useSelector(state => state.user)
+
 
     return (
         <Container maxWidth="xl" sx={{ display: 'flex', height: "100vh", justifyContent: "center", alignItems: "center" }}>
@@ -29,7 +34,7 @@ const ResultBox = ({ user, score, totalQuestions, attempted }) => {
                         <div className="value text-left flex flex-col gap-3">
                             <p>{totalQuestions}</p>
                             <p>{attempted}</p>
-                            <p>{score/10}</p>
+                            <p>{score / 10}</p>
                         </div>
                     </div>
                     <div className="--bottom flex justify-between border-t border-gray-300 pt-4">

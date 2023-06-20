@@ -1,9 +1,11 @@
 import { Container } from '@mui/material'
 import React, { useEffect } from 'react'
-import { accessDeniedImg } from '../../StaticImages/Icons'
+import { accessDeniedImg } from '../../Icons_Images/Icons'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
-const NotAllowed = ({ user }) => {
+const NotAllowed = () => {
+    const {user} = useSelector(state => state.user)
     const navigate = useNavigate()
     useEffect(() => {
         if (!user) navigate('/')

@@ -1,5 +1,5 @@
 import React from 'react'
-import { JsIcon, reactIcon } from '../StaticImages/Icons'
+import { JsIcon, reactIcon } from '../../Icons_Images/Icons'
 
 const AssesmentTitle = ({textwidth1,textwidth2}) => {
     return (
