@@ -2,7 +2,7 @@ import React from 'react'
 
 const QuizCard = ({ quiz, handleTakeQuiz }) => {
     return (
-        <div className="singleQuiz w-5/12 lg:w-60 flex flex-col justify-center items-center gap-4 shadow-md py-5 px-3 rounded-md">
+        <div className="singleQuiz !w-[45%] md:!w-[30%] lg:!w-60 flex flex-col justify-center items-center gap-4 shadow-md py-5 px-3 rounded-md">
             <div className="quizIcon w-24 h-24 lg:w-28 lg:h-28">
                 <img className='w-full h-full object-contain' src={quiz.img} alt="" />
             </div>

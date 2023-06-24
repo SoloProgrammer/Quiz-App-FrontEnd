@@ -4,3 +4,4 @@ export const getTotalScore = (scoreObj) => {
         return totalScore
     },0);
 }
+

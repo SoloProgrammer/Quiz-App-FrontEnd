@@ -7,7 +7,7 @@ export function handleRemoveToken() {
 }
 
 export const getUser = async (token) => {
-    const res = await fetch(`${server.URL.local}/api/user`, {
+    const res = await fetch(`${server.URL.production}/api/user`, {
         headers: { token }
     });
 
@@ -18,7 +18,7 @@ export const getUser = async (token) => {
 }
 
 export const createtUser = async (name, email) => {
-    const res = await fetch(`${server.URL.local}/api/user`, {
+    const res = await fetch(`${server.URL.production}/api/user`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -34,8 +34,8 @@ export const createtUser = async (name, email) => {
     return json
 }
 
-export const submitTest = async (selectedOptions, questionnaire_id) => {
-    const res = await fetch(`${server.URL.local}/api/test/submit/${questionnaire_id}`, {
+export const submitTest = async (selectedOptions, quizId) => {
+    const res = await fetch(`${server.URL.production}/api/test/quiz/submit/${quizId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -53,12 +53,12 @@ export const submitTest = async (selectedOptions, questionnaire_id) => {
         return false
     }
 
-    return json.score
+    return { user: json.user, score: json.score }
 }
 
 export const getQuestionnaire = async () => {
     let questionnaire_id = "React_and_JS_skills_questionnaire";
-    const res = await fetch(`${server.URL.local}/api/test/questionnaire/${questionnaire_id}`, {
+    const res = await fetch(`${server.URL.production}/api/test/questionnaire/${questionnaire_id}`, {
         headers: {
             token: localStorage.getItem('token')
         }
@@ -73,7 +73,7 @@ export const getQuestionnaire = async () => {
 
 export const putComment = async (qId, comment, questionnaire_id) => {
     try {
-        const res = await fetch(`${server.URL.local}/api/test/question/${qId}/comment/${questionnaire_id}`, {
+        const res = await fetch(`${server.URL.production}/api/test/question/${qId}/comment/${questionnaire_id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -96,11 +96,9 @@ export const singlequiz = async (slug) => {
     try {
         const res = await fetch(api.quizAPI(slug));
 
-        console.log(res);
-
         const { data } = await res.json();
 
-        return { data }
+        return { quiz: data }
     } catch (error) {
         return { error: error.message }
     }

@@ -8,16 +8,18 @@
     top: 3.7rem;
     transition: all .3s;
     transform: translateY(-.3rem);
-    width: 110px;
+    width: 150px;
+    max-width: 300px;
     opacity: 0;
     visibility: hidden;
+    border: 1px solid rgba(0,0,0,.2);
 }
 .proflileHoverBox a:hover{
     background: #F5F7FA;
+    background: #eef1f4ba;
 }
-.proflileHoverBox a > p{
-    padding: .3rem 2rem;
-    padding-left: 1rem;
+.proflileHoverBox a > div{
+    padding: .5rem 1.5rem;
     color: rgb(90, 102, 114);
     font-size: 1rem;
 }
@@ -26,4 +28,7 @@
     transform: translate(0);
     opacity: 1;
     visibility: visible;
+}
+.header{
+    transition: top .2s ease-in-out;
 }

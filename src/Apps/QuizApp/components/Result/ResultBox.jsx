@@ -1,17 +1,30 @@
-import { Container } from '@mui/material'
+import { Button, Container } from '@mui/material'
 import React from 'react'
 import './ResultBox.css'
-import { outlineGreenTickImg } from '../../Icons_Images/Icons'
+import { badges, outlineGreenTickImg } from '../../Icons_Images/Icons'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import BadgeComponent from '../BadgeBox/BadgeComponent'
 const ResultBox = ({ totalQuestions, attempted }) => {
 
     let { score } = useSelector(state => state.questionnaire)
     let { user } = useSelector(state => state.user)
+    let { quiz } = useSelector(state => state.quizes)
 
+    console.log(user.badges);
 
     return (
         <Container maxWidth="xl" sx={{ display: 'flex', height: "100vh", justifyContent: "center", alignItems: "center" }}>
-            <div className="bg-white scoreCard p-3 md:p-7 shadow-lg scoreCard rounded-md">
+
+            {
+                user?.badges.length > 0
+                &&
+                user?.badges.map(b => b.quiz).includes(quiz?._id)
+                &&
+                <BadgeComponent badge={user?.badges.filter(b => b.quiz === quiz?._id)[0].badge} />
+            }
+
+            <div className="bg-white scoreCard p-3 md:p-7 shadow-lg scoreCard rounded-md !pb-1">
                 <div className='mb-7'>
                     <h4 className='text-4xl roboto text-gray-600 mb-3'>Thanks for your time</h4>
                     <h5 className='text-xs font-bold text-green-500'>Dear Candidate, your test has been successfully submitted.
@@ -40,6 +53,10 @@ const ResultBox = ({ totalQuestions, attempted }) => {
                     <div className="--bottom flex justify-between border-t border-gray-300 pt-4">
                         <p className='underline text-gray-500'>Your Score </p><p className='mr-1'>{score}</p>
                     </div>
+                </div>
+                <div className='my-3 flex w-full justify-between items-center'>
+                    <p className='roboto'><span className='bold text-gray-700'>QUIZ</span>: <span className='text-gray-600'>{quiz?.techs.join(" + ")}</span></p>
+                    <Link to={'/'}><Button className='!bg-gray-100 !px-10 hover:!bg-gray-200'>HOME</Button></Link>
                 </div>
             </div>
         </Container>

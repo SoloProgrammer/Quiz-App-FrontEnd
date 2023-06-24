@@ -8,21 +8,13 @@ import { useSelector } from 'react-redux';
 const Quiz = () => {
 
   const navigate = useNavigate();
-  const { questionnaire } = useSelector(state => state.questionnaire)
+  const { questions } = useSelector(state => state.questionnaire)
   const { user } = useSelector(state => state.user)
 
   const [isStarted, setIsStarted] = useState(false);
   const [testEnded, setTestEnded] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState({})
-
-  useEffect(() => {
-    if (user) {
-      if (user.isStarted && !isStarted) {
-        user.isSubmitted ? navigate('/submitted') : navigate('/activity-not-allowed')
-      }
-    }
-    // eslint-disable-next-line
-  }, [user])
+  
 
   return (
     <div>
@@ -35,7 +27,7 @@ const Quiz = () => {
             :
             <StartTest setIsStarted={setIsStarted}/>
           :
-          <ResultBox totalQuestions={questionnaire.questions.length} attempted={Object.keys(selectedOptions).length} />
+          <ResultBox totalQuestions={questions?.length} attempted={Object.keys(selectedOptions).length} />
       }
     </div>
   )

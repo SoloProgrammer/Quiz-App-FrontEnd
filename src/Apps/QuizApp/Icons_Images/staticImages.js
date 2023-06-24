@@ -1,2 +1,3 @@
 export const loginImage = "https://img.freepik.com/premium-vector/sign-page-flat-style-illustration-design_538610-806.jpg?w=600"
 export const signUpImage = "https://img.freepik.com/premium-vector/online-registration-illustration-design-concept-websites-landing-pages-other_108061-939.jpg?w=2000"
+export const defaultAvatarImg ="https://res.cloudinary.com/dvzjzf36i/image/upload/v1679814483/wxrvucwq93ovrswfpsk3.png"

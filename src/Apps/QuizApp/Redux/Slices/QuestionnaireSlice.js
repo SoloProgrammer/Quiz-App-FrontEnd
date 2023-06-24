@@ -5,14 +5,14 @@ const QuestionnaireSlice = createSlice({
     name: 'questionnaire',
     initialState: {},
     reducers: {
-        clearEror: (state) => {
+        clearError: (state) => {
             state.error = null
         },
         setScore: (state, { payload }) => {
             state.score = payload
         },
         updateQuestionnare: (state, { payload }) => {
-            state.questionnaire = payload
+            state.questions = payload
         }
     },
     extraReducers: {
@@ -21,7 +21,7 @@ const QuestionnaireSlice = createSlice({
         },
         [GetQuestionnaire.fulfilled]: (state, { payload }) => {
             state.loading = false
-            state.questionnaire = payload
+            state.questions = payload
         },
         [GetQuestionnaire.rejected]: (state, { payload }) => {
             state.loading = false

@@ -8,9 +8,7 @@ const Submiited = () => {
 
   const { user } = useSelector(state => state.user)
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!user || !user.isSubmitted) navigate('/')
-  }, [user,navigate]);
+
 
   return (
     user

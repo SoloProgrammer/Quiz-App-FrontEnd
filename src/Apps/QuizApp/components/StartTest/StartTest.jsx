@@ -2,100 +2,109 @@ import React, { useState, useEffect } from 'react'
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import './StartTest.css'
-import { TextField } from '@mui/material';
-import { JsIcon, reactIcon } from '../../Icons_Images/Icons';
+import { Checkbox, FormControlLabel, FormHelperText } from '@mui/material';
 // import { createUser, getQuestionnaire } from '../../Helpers/AsyncCalls';
-import { CreateUser } from '../../Redux/ThunkActions/UserActions';
 import { GetQuestionnaire } from '../../Redux/ThunkActions/QuestionnareActions';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { setScore } from '../../Redux/Slices/QuestionnaireSlice';
 import { singlequiz } from '../../Helpers/AsyncCalls';
+import { setQuiz } from '../../Redux/Slices/QuizesSlice'
+import { showToast } from '../../configs/Toast';
+import LockTwoToneIcon from '@mui/icons-material/LockTwoTone';
+import { quizes, width50TechsArr } from '../../Data/quizes';
+import QuizHeading from '../Utils/QuizHeading';
 
 const StartTest = ({ setIsStarted }) => {
+
 
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
 
+  const { user } = useSelector(state => state.user)
+  const { questions } = useSelector(state => state.questionnaire)
+  const { quiz } = useSelector(state => state.quizes)
+
   const location = useLocation()
 
   const params = useParams()
 
-  const [quizDetail, setQuizDetail] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [quizDetail, setQuizDetail] = useState(quiz)
+  const [quizloading, setQuizLoading] = useState(false)
 
   const getQuizDetail = async () => {
 
-    setLoading(true)
-    let { data, error } = await singlequiz(params.slug)
-    if(error && !data.length) {
-      console.log("--Get quiz detail error:")
-    }
-    setLoading(false)
-    setQuizDetail(data[0])
+    setQuizLoading(true)
+    let { quiz, error } = await singlequiz(params.slug)
+    if (error || !quiz) {
+      navigate('/')
 
+    }
+    setQuizLoading(false)
+    setQuizDetail(quiz)
+    dispatch(setQuiz(quiz))
   }
 
   useEffect(() => {
-    if (location.state) {
-      setQuizDetail(location.state)
-    }
-    else {
+    // if (location.state) {
+    //   dispatch(setQuiz(location.state))
+    //   setQuizDetail(location.state)
+    // }
+    // else {
+    // }
+    if ((quiz && quiz.slug !== location.state.slug) || !quiz) {
+      setQuizDetail(null)
       getQuizDetail()
     }
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [])
 
-  const { user } = useSelector(state => state.user)
-  const { questionnaire } = useSelector(state => state.questionnaire)
-
-  let defaultInputvals = {
-    email: "",
-    emailErrorText: "",
-    name: "",
-    nameErrorText: ""
-  }
-
-  const [inputFiled, setInputField] = useState(defaultInputvals)
 
   const [isDisabled, setIsDisabled] = useState(false);
-
-  const handleChange = (e) => {
-    setInputField({ ...inputFiled, [e.target.name]: e.target.value })
-  }
+  const [isChecked, setIsChecked] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleSubmit = async (e) => {
+
     e.preventDefault()
 
-    const { name, email } = inputFiled
-
-    if (name === '' && email === '') {
-      setInputField({ ...inputFiled, nameErrorText: "Name is required", emailErrorText: "Email is required" })
+    if (!isChecked) {
+      return setError(true)
     }
-    else if (name === '') {
-      setInputField({ ...inputFiled, nameErrorText: "Name is required" })
+    else setError(false)
+    
+    if (quizDetail?.isStarted.includes(user?._id) && !quizDetail?.isSubmitted.includes(user?._id)) {
+      navigate(`/quiz/${quiz.slug}/activity-not-allowed`)
+      return
     }
-    else if (email === '') {
-      setInputField({ ...inputFiled, emailErrorText: "Email is required" })
+    else if(quizDetail?.isSubmitted.includes(user?._id)){
+      navigate(`/quiz/${quiz.slug}/submitted`)
     }
-    else {
-      setIsDisabled(true)
-      e.target.textContent = "Preparing your test..."
 
-      setLoading(true)
 
-      if (user?.isStarted && !user?.isSubmitted) {
-        dispatch(GetQuestionnaire('645ce48a5b5e820d4962e704'))
-      }
-      else if (user?.isStarted) {
-        dispatch(setScore(user.score))
-        user?.isSubmitted ? navigate('/submitted') : navigate('/activity-not-allowed')
-      }
+    if (!user) {
+      showToast("", "Please login to proceed further!", 4000, <LockTwoToneIcon color='green' />)
+      navigate('/login')
+      return
+    }
 
+    setIsDisabled(true)
+    e.target.textContent = "Preparing your test..."
+
+    if (user?.isStarted && !user?.isSubmitted) {
       dispatch(GetQuestionnaire(quizDetail._id))
     }
+    else if (user?.isStarted) {
+      dispatch(setScore(user.score))
+      user?.isSubmitted ? navigate('/submitted') : navigate('/activity-not-allowed')
+    }
+    dispatch(GetQuestionnaire(quizDetail._id))
   }
+
+  useEffect(() => {
+
+  }, [])
 
   // useEffect(() => {
   //   if (user) {
@@ -111,18 +120,19 @@ const StartTest = ({ setIsStarted }) => {
   // }, [user, dispatch, navigate])
 
   useEffect(() => {
-    if (questionnaire) if (Object.keys(questionnaire).length > 0) setIsStarted(true)
+    if (questions) if (questions.length > 0) setIsStarted(true)
     // eslint-disable-next-line
-  }, [questionnaire])
+  }, [questions])
 
-
+  console.log(quizDetail?.techs.join(' + '), quizes.map(q => q.name).includes(quizDetail?.techs.join(' + ')));
   return (
     <>
       <CssBaseline />
       <Container maxWidth="xl" className='StartTestContainer p-0' sx={{ display: 'flex', height: "100vh", justifyContent: "center", alignItems: "center" }}>
         {
-          <div className={`p-3 shadow-md rounded-sm  bg-white md:p-10 md:w-f startTestBox ${loading && 'loadingQuiz'}`}>
-            <h3 className='text-2xl font-medium pb-7 justify-center md:text-3xl '>Assesment of React <span className='px-2 '><img className='inline mb-1' width={30} src={reactIcon} alt="react" /></span> & Javascript <span className='px-2'><img className='inline mb-1' width={30} src={JsIcon} alt="" /></span> skills</h3>
+          <div className={`p-3 shadow-md rounded-sm  bg-white md:p-10 md:w-f startTestBox ${quizloading && 'loadingQuiz'}`}>
+
+            <QuizHeading width50TechsArr={width50TechsArr} quiz={quizDetail} />
 
             <div className="align-text-left flex flex-col justify-start items-start">
               <h1 className='text-lg font-bold underline pb-4'>Here are some key points to keep in mind before taking the test</h1>
@@ -137,35 +147,22 @@ const StartTest = ({ setIsStarted }) => {
             </div>
             <p className='mt-4 font-bold text-sm flex justify-start'>
               <span>Note:</span>
-              <span className='mx-2 text-blue-800'>{quizDetail?.description}</span>
+              <span className='mx-2 text-blue-800 text-left'>{quizDetail?.description}</span>
             </p>
-            <h3 className='my-3 font-semibold text-left text-gray-500'>Fill out the following details and click the "Start the test" button</h3>
+            <h3 className='my-3 font-semibold text-left text-gray-500'>Please check the below label and click the "Start the test" button</h3>
             <form action="#" className='w-full mt-3 flex flex-col gap-2 '>
-              <div className='w-full mt-3 flex flex-col gap-2 md:flex-1 md:flex-row'>
-                <TextField
-                  className='w-full'
-                  error={inputFiled.nameErrorText ? true : false}
-                  id='name'
-                  label="Name"
-                  name="name"
-                  helperText={inputFiled.nameErrorText}
-                  variant="filled"
-                  value={inputFiled.name}
-                  onChange={handleChange}
-                />
-                <TextField
-                  className='w-full'
-                  error={inputFiled.emailErrorText ? true : false}
-                  id='email'
-                  label="Email"
-                  helperText={inputFiled.emailErrorText}
-                  name='email'
-                  variant="filled"
-                  value={inputFiled.email}
-                  onChange={handleChange}
-                  type='email'
-                />
-              </div>
+              {
+                quizDetail
+                &&
+                <>
+                  <FormControlLabel value={isChecked} onChange={() => {
+                    setIsChecked(!isChecked)
+                    setError(false)
+                  }} required control={<Checkbox />} label="I have read the above points carefully!" />
+                  {error && <FormHelperText error className='!font-bold'>*Please check the above to continue</FormHelperText>}
+                </>
+
+              }
               <button disabled={isDisabled} onClick={handleSubmit} className='transition-all w-full px-5 py-3 bg-purple-500 mt-4 font-bold text-lg text-white hover:bg-purple-700 disabled:hover:bg-purple-300 disabled:bg-purple-300'>Start the test</button>
             </form>
 

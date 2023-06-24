@@ -14,6 +14,10 @@ export const badgeIcon = "https://cdn-icons-png.flaticon.com/512/4168/4168977.pn
 export const skillsUPIcon = "https://cdn-icons-png.flaticon.com/512/10255/10255704.png"
 export const rankingIcon = "https://cdn-icons-png.flaticon.com/512/3736/3736888.png"
 
-export const goldBadge = "https://cdn-icons-png.flaticon.com/512/7645/7645279.png"
-export const silverBadge = "https://cdn-icons-png.flaticon.com/512/7645/7645294.png"
-export const bronzeBadge = "https://cdn-icons-png.flaticon.com/512/7645/7645366.png"
+export const badges = {
+    gold: "https://cdn-icons-png.flaticon.com/512/7645/7645279.png",
+    silver: "https://cdn-icons-png.flaticon.com/512/7645/7645294.png",
+    bronze: "https://cdn-icons-png.flaticon.com/512/7645/7645366.png"
+}
+
+export const partyPopGif = "https://em-content.zobj.net/source/animated-noto-color-emoji/356/party-popper_1f389.gif"

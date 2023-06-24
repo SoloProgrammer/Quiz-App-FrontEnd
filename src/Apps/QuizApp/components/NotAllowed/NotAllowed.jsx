@@ -1,15 +1,16 @@
 import { Container } from '@mui/material'
 import React, { useEffect } from 'react'
 import { accessDeniedImg } from '../../Icons_Images/Icons'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const NotAllowed = () => {
-    const {user} = useSelector(state => state.user)
+    const { slug } = useParams()
+    const { user } = useSelector(state => state.user)
+    const { quiz } = useSelector(state => state.quizes)
     const navigate = useNavigate()
     useEffect(() => {
-        if (!user) navigate('/')
-        // eslint-disable-next-line
+        if(quiz?.slug !== slug) navigate('/')
     }, [])
     return (
         user
@@ -21,12 +22,13 @@ const NotAllowed = () => {
                     <img className='w-24' src={accessDeniedImg} alt="access denied" />
                 </div>
                 <div className='mt-3'>
-                    Your account was blocked
+                   The quiz was blocked for your account!
                 </div>
                 <div className='text-xs font-bold my-5 text-center'>
                     <p className='text-red-500 bg-purple-100 px-1 w-fit'>As you attempt to re-start the test manually by reloading/refreshing the page or by doing some non-permitted activities!</p>
                     <p className='text-gray-500 mt-1 text-sm md:text-lg'>Which is why from now itself we have disbaled your account permananetly for the test</p>
                 </div>
+                <Link to={'/'}>HOME</Link>
             </div>
         </Container>
     )

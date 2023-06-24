@@ -10,6 +10,9 @@ const quizesSlice = createSlice({
         },
         setQuizes: (state, { payload }) => {
             state.quizes = payload
+        },
+        setQuiz: (state, { payload }) => {
+            state.quiz = payload
         }
     },
     extraReducers: {
@@ -27,6 +30,6 @@ const quizesSlice = createSlice({
     }
 })
 
-export const { clearEror, setQuizes } = quizesSlice.actions;
+export const { clearEror, setQuizes, setQuiz } = quizesSlice.actions;
 
 export default quizesSlice.reducer

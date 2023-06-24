@@ -1,23 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api, authHeaders } from "../../Helpers/api";
-import { handleRemoveToken } from "../../Helpers/AsyncCalls";
+import axios from "axios";
 
 export const GetQuestionnaire = createAsyncThunk('getQuestionnaire', async (Qid, { rejectWithValue }) => {
 
     try {
-        let res = await fetch(api.questionnaireAPI(Qid),{
-            headers:authHeaders()
-        })
+        const headers = authHeaders()
+    
+        let { data } = await axios.get(api.questionnaireAPI(Qid), { headers })
 
-        if(res.status === 401) return handleRemoveToken()
-
-        let json = await res.json()
-
-        return json.questionnaire;
+        return data.questions
 
     } catch (error) {
-        console.log(error);
-        rejectWithValue(error.message)
+        // if(error.response.status === 401) handleRemoveToken()
+        // console.log(error);
+        rejectWithValue(error.response.data.message)
     }
 })
 
