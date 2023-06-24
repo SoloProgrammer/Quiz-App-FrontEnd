@@ -26,7 +26,7 @@ const BadgeComponent = ({ badge }) => {
                     <img style={{ transform: "rotateY(180deg)" }} className='w-10' src={partyPopGif} alt="" />
                     <span>CONGRATULATIONS</span>
                     <img className='w-10' src={partyPopGif} alt="" /></p>
-                <p className='text-gray-600 roboto'>" You earn a <span className='px-5 py-1 rounded-full bg-gray-200 !text-black text-sm font-medium'>gold</span> bagde "</p>
+                <p className='text-gray-600 roboto'>" You earn a <span className='px-5 py-1 rounded-full bg-gray-200 !text-black text-sm font-medium'>{badge}</span> bagde "</p>
                 <div className="badgeImg my-6">
                     <img className='!w-36' src={badges[badge]} alt="" />
                 </div>
