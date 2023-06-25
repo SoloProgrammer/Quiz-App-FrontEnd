@@ -8,10 +8,10 @@ const BadgeComponent = ({ badge }) => {
         setTimeout(() => {
             document.querySelector('.badgeBoxBackdrop')?.classList.remove('opacity-0')
             document.querySelector('.badgeBoxBackdrop')?.classList.remove('invisible')
-        }, 1000);
+        }, 800);
         setTimeout(() => {
             document.querySelector('.badgeBox')?.classList.remove('scale-0')
-        }, 1500);
+        }, 1000);
     }, []) 
 
     const hideBadgeBox = () =>{

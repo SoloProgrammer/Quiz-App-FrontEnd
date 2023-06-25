@@ -195,7 +195,7 @@ const Questionnaire = ({ setTestEnded, selectedOptions, setSelectedOptions }) =>
                         className={`w-36`}
                         endIcon={!loading && (!isLastQuestion() ? <NavigateNextIcon /> : <ExitToAppIcon />)}>
                         {
-                            !isLastQuestion() ? 'Next' : 'End Test'
+                            !isLastQuestion() ? 'Next' : 'End Quiz'
                         }
                     </LoadingButton>
                 </div>

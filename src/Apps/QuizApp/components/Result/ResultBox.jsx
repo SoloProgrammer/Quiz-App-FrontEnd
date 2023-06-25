@@ -2,24 +2,27 @@ import { Button, Container } from '@mui/material'
 import React from 'react'
 import './ResultBox.css'
 import { badges, outlineGreenTickImg } from '../../Icons_Images/Icons'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import BadgeComponent from '../BadgeBox/BadgeComponent'
+import { updateQuestionnare } from '../../Redux/Slices/QuestionnaireSlice'
 const ResultBox = ({ totalQuestions, attempted }) => {
 
     let { score } = useSelector(state => state.questionnaire)
     let { user } = useSelector(state => state.user)
     let { quiz } = useSelector(state => state.quizes)
 
-    console.log(user.badges);
+    const dispatch = useDispatch()
+
+    function checkBadgeEarned(user) {
+        return user?.badges.length > 0 && user?.badges.map(b => b.quiz).includes(quiz?._id)
+    }
 
     return (
         <Container maxWidth="xl" sx={{ display: 'flex', height: "100vh", justifyContent: "center", alignItems: "center" }}>
 
             {
-                user?.badges.length > 0
-                &&
-                user?.badges.map(b => b.quiz).includes(quiz?._id)
+                checkBadgeEarned(user)
                 &&
                 <BadgeComponent badge={user?.badges.filter(b => b.quiz === quiz?._id)[0].badge} />
             }
@@ -27,7 +30,7 @@ const ResultBox = ({ totalQuestions, attempted }) => {
             <div className="bg-white scoreCard p-3 md:p-7 shadow-lg scoreCard rounded-md !pb-1">
                 <div className='mb-7'>
                     <h4 className='text-4xl roboto text-gray-600 mb-3'>Thanks for your time</h4>
-                    <h5 className='text-xs font-bold text-green-500'>Dear Candidate, your test has been successfully submitted.
+                    <h5 className='text-xs font-bold text-green-500'>Dear Candidate, your quiz has been successfully submitted.
                         <span><img className='w-8 mr-3 inline-block' src={outlineGreenTickImg} alt="" /></span>
                         <br />
                         <span className='mt-1 text-gray-500'>You can view your statistics below.</span></h5>
@@ -53,10 +56,22 @@ const ResultBox = ({ totalQuestions, attempted }) => {
                     <div className="--bottom flex justify-between border-t border-gray-300 pt-4">
                         <p className='underline text-gray-500'>Your Score </p><p className='mr-1'>{score}</p>
                     </div>
+                    {checkBadgeEarned(user) && <div className="--bottom flex justify-between  pt-4">
+                        <p className='underline text-gray-500'>
+                            <span>Badge Earned</span>
+                            <span className='text-[.8rem] mt-1 ml-2 !no-underline inline-block'>
+                                ( {user?.badges.filter(b => b.quiz === quiz?._id)[0].badge} )
+                            </span>
+                        </p>
+                        <div className='flex flex-col items-end justify-cneter'>
+                            <img className='w-8' src={badges[user?.badges.filter(b => b.quiz === quiz?._id)[0].badge]} alt="" />
+
+                        </div>
+                    </div>}
                 </div>
                 <div className='my-3 flex w-full justify-between items-center'>
                     <p className='roboto'><span className='bold text-gray-700'>QUIZ</span>: <span className='text-gray-600'>{quiz?.techs.join(" + ")}</span></p>
-                    <Link to={'/'}><Button className='!bg-gray-100 !px-10 hover:!bg-gray-200'>HOME</Button></Link>
+                    <Link to={'/'}><Button onClick={() => dispatch(updateQuestionnare([]))} className='!bg-gray-100 !px-10 hover:!bg-gray-200'>HOME</Button></Link>
                 </div>
             </div>
         </Container>

@@ -152,7 +152,7 @@ const AuthFrom = ({ loginPage }) => {
     return (
         <div className={`flex gap-16 mt-10 items-center authForm justify-center f-roboto flex-col lg:flex-row px-2 mb-5`}>
             <div style={{ borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }} className='hidden md:block bg-white w-72 h-72 lg:w-96 lg:h-96 overflow-hidden shadow-lg'>
-                <img className='w-full h-w-full object-contain' src={loginPage ? loginImage : signUpImage} alt="login" />
+                <img className='w-full h-full object-contain' src={loginPage ? loginImage : signUpImage} alt="login" />
             </div>
             <form className={`bg-white p-6 rounded-lg w-full md:w-7/12 lg:w-5/12`} onSubmit={handleSubmit}>
                 <h2 className='font-medium text-2xl flex gap-3 items-center '>{loginPage ? "Login" : "SignUp"} with <span><AppLogo iconW={5} textSizeMob='sm' textSizeDesk='sm' /></span></h2>
@@ -310,7 +310,7 @@ const AuthFrom = ({ loginPage }) => {
                         </>
 
                     }
-                    <div className='w-full flex px-2 justify-between mt-6 mb-2 md:mt-0 md:mb-0'>
+                    <div className='w-full flex px-2 justify-between mt-6 mb-2 lg:mt-0 lg:mb-0'>
                         {loginPage && <p className='font-medium text-blue-400 underline text-sm cursor-pointer'>Forget password?</p>}
                         <Link to={`${!loading ? loginPage ? "/sign-up" : "/login" : ""}`} className={`font-medium ${loading ? "text-blue-200 cursor-default" : "text-blue-400"} underline text-sm cursor-pointer`}>
                             <p>
