@@ -147,14 +147,14 @@ const AuthFrom = ({ loginPage }) => {
         dispatch(clearError())
 
         // eslint-disable-next-line
-    }, [ error])
+    }, [error])
 
     return (
-        <div className={`flex gap-16 mt-10 items-center authForm justify-center f-roboto flex-col lg:flex-row px-2 mb-5`}>
+        <div className={`flex gap-16 mt-10 items-center authForm justify-center f-roboto flex-col lg:flex-row px-2 my-5`}>
             <div style={{ borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }} className='hidden md:block bg-white w-72 h-72 lg:w-96 lg:h-96 overflow-hidden shadow-lg'>
                 <img className='w-full h-full object-contain' src={loginPage ? loginImage : signUpImage} alt="login" />
             </div>
-            <form className={`bg-white p-6 rounded-lg w-full md:w-7/12 lg:w-5/12`} onSubmit={handleSubmit}>
+            <form className={`bg-white p-6 rounded-lg w-full md:w-7/12 lg:w-5/12 `} onSubmit={handleSubmit}>
                 <h2 className='font-medium text-2xl flex gap-3 items-center '>{loginPage ? "Login" : "SignUp"} with <span><AppLogo iconW={5} textSizeMob='sm' textSizeDesk='sm' /></span></h2>
                 <div className='flex justify-center items-center w-full'>
                     <div style={{ borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }} className='md:hidden bg-white w-72 h-72 md:w-96 md:h-96 overflow-hidden shadow-lg'>
@@ -257,6 +257,42 @@ const AuthFrom = ({ loginPage }) => {
                             </div>
                         }
                     </div>
+                    {/* {
+                        !loginPage
+                        &&
+                        <div className="inptDiv w-full">
+                            <TextField
+                                error={!!inptValues.name.errorText}
+                                label="About yourself"
+                                name='name'
+                                helperText=""
+                                variant="filled"
+                                className='w-full'
+                                multiline
+                                maxRows={4}
+                                rows={4}
+                                onChange={handleChange}
+                            />
+                            {inptValues.name.errorText && <FormHelperText className='' error={!!inptValues.name.errorText}>{inptValues.name.errorText}</FormHelperText>}
+                        </div>
+                    } */}
+                    {/* {
+                        !loginPage
+                        &&
+                        <div className="inptDiv w-full">
+                            <TextField
+                                error={!!inptValues.name.errorText}
+                                id="standard-error-helper-text"
+                                label="Git Hub link"
+                                name='name'
+                                helperText=""
+                                variant="filled"
+                                className='w-full'
+                                onChange={handleChange}
+                            />
+                            {inptValues.name.errorText && <FormHelperText className='' error={!!inptValues.name.errorText}>{inptValues.name.errorText}</FormHelperText>}
+                        </div>
+                    } */}
                     {
                         !loginPage
                         &&

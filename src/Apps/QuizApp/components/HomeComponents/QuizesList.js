@@ -13,18 +13,11 @@ const QuizesList = () => {
 
     let navigate = useNavigate()
 
-    let dispatch = useDispatch();
-
-    const { quizes, loading } = useSelector(state => state.quizes)
-
     const handleTakeQuiz = (quiz) => {
         navigate(`/quiz/${quiz.slug}`, { state: quiz })
     }
-
-    useEffect(() => {
-        !quizes && dispatch(getQuizes())
-        // eslint-disable-next-line
-    }, [dispatch])
+    
+    const { quizes, loading } = useSelector(state => state.quizes)
 
     return (
         <section id='exploreQuizes' className={`bg-white mt-4 f-roboto mx-2 lg:mx-10 rounded-md mb-9 pb-8`}>

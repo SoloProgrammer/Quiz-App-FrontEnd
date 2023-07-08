@@ -124,7 +124,6 @@ const StartTest = ({ setIsStarted }) => {
     // eslint-disable-next-line
   }, [questions])
 
-  console.log(quizDetail?.techs.join(' + '), quizes.map(q => q.name).includes(quizDetail?.techs.join(' + ')));
   return (
     <>
       <CssBaseline />

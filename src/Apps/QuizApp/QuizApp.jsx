@@ -14,18 +14,21 @@ import { Toaster } from 'react-hot-toast';
 import Profile from './pages/Profile'
 import { getUser } from './Redux/ThunkActions/UserActions'
 import RestrictedRoute from './Routes/RestrictedRoute'
+import { getQuizes } from './Redux/ThunkActions/QuizesActions'
 
 const WebFormApp = () => {
 
     const dispatch = useDispatch()
 
     const { user, loading } = useSelector(state => state.user)
+    const { quizes } = useSelector(state => state.quizes)
 
     useEffect(() => {
         let token = localStorage.getItem('token')
         if (token && !user) {
             dispatch(getUser())
         }
+        !quizes && dispatch(getQuizes())
     }, [dispatch])
 
     return (

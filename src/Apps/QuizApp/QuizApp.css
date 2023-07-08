@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Makasar&display=swap');
 
 :root{
     --light-purple:rgb(223 217 248) !important
@@ -9,6 +10,7 @@ body{
     background-color: var(--light-purple) !important;
     font-family: 'Raleway', sans-serif !important;
     scroll-behavior: smooth;
+    overflow-x: hidden !important;
 }
 ::selection{
     background: var(--light-purple) !important; 
@@ -21,6 +23,9 @@ body{
 }
 .roboto{
     font-family: roboto !important;
+}
+.noto{
+    font-family: 'Noto Serif Makasar', serif !important;
 }
 .shadow-bold{
     box-shadow: 0 0 3px rgba(0,0,0,.4);
